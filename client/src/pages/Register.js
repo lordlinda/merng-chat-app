@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "../utils/hooks";
 import { AuthContext } from "../utils/auth";
 
 function Register(props) {
+  const [error, setError] = useState("");
   const { login } = useContext(AuthContext);
   /**the reason we call registerUser instead of addUser is because it is not declared yet */
   const { onChange, onSubmit, values } = useForm(registerUser, {
@@ -22,8 +23,8 @@ function Register(props) {
       login(result.data.register);
       props.history.push("/");
     },
-    onError(err) {
-      console.log(err);
+    onError(error) {
+      setError(error.networkError.result.errors[0].message);
     },
     variables: values,
   });
@@ -69,6 +70,7 @@ function Register(props) {
           value={confirmPassword}
           onChange={onChange}
         />
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <Button type="submit" primary>
           Register
         </Button>
