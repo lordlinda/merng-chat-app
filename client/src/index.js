@@ -11,7 +11,7 @@ import {
 import { setContext } from "@apollo/client/link/context";
 
 const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_URL,
+  uri: "https://merng-chat-app1.herokuapp.com/",
 });
 
 const authLink = setContext((_, { headers }) => {
